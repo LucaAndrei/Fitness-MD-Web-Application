@@ -1,0 +1,3 @@
+
+
+Modules.server.setAdmins = setAdmins;
