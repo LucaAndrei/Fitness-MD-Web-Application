@@ -36,6 +36,7 @@ let WeightDataSchema = new SimpleSchema({
     }
 })
 
+
 let UserDataSchema = new SimpleSchema({
     'userEmail' : {
         type: String,
