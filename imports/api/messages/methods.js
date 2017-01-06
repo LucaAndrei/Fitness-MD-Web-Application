@@ -1,120 +1,126 @@
 import { Meteor } from 'meteor/meteor';
-//import { ValidatedMethod } from 'meteor/mdg:validated-method';
-//import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+import { ValidatedMethod } from 'meteor/mdg:validated-method';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+
+let DEBUG = true;
+let LOG_TAG = "imports/api/messages/methods";
 
 
-/*
 export const insertMessage = new ValidatedMethod({
-  name: 'insertMessage',
-  validate: new SimpleSchema({
-    to: {
-      type: String,
-    },
-    owner: {
-      type: String,
-    },
-    timestamp: {
-      type: Date,
-    },
-    message: {
-      type: String,
-    },
-  }).validator(),
-  run({ to, owner, timestamp, message }) {
-    console.log(to,owner,timestamp,message);
-    insertMessage
-    //return Lists.insert({}, null, locale);
-  },
-});*/
-
-Meteor.methods({
-  insertMessage( message ) {
-    console.log("message",message);
-    /*check( message, {
-      destination: String,
-      message: String
-    });*/
-
-    try {
-      handleInsert( message );
-    } catch ( exception ) {
-      throw new Meteor.Error( '500', `${ exception }` );
+    name : 'insertMessage',
+    validate : new SimpleSchema({
+        destination : { type: String },
+        message : {type : String}
+    }).validator(),
+    run({destination, message}) {
+        console.log("destination",destination);
+        console.log("message",message);
+        const messageToInsert = {
+            destination,
+            message
+        }
+        console.log("messageToInsert",messageToInsert);
+        try {
+            handleInsert( messageToInsert );
+        } catch ( exception ) {
+            throw new Meteor.Error( '500', `${ exception }` );
+        }
     }
-  }
-});
-
+})
 
 let _insertMessage = ( message ) => {
-  console.log("_insertMessage message",message)
-  return Messages.insert( message );
+    if (DEBUG) {
+        console.log("Step 4) _insertMessage message",message)
+    }
+    var inserted =  Messages.insert( message );
+    console.log("inserted",inserted);
+    return inserted;
 };
 
-let _escapeUnwantedMarkdown = ( message ) => {
-  // Escape h1-h6 tags and inline images ![]() in Markdown.
-  return message
-  .replace( /#/g, '&#35;' )
-  .replace( /(!\[.*?\]\()(.*?)(\))+/g, '&#33;&#91;&#93;&#40;&#41;' );
-};
 
 let _cleanUpMessageBeforeInsert = ( message ) => {
-  console.log("_cleanUpMessageBeforeInsert message",message)
-  delete message.destination;
-  message.message = _escapeUnwantedMarkdown( message.message );
-  console.log("_cleanUpMessageBeforeInsert message 123",message)
-};
-
-let _getChannelId = ( channelName ) => {
-  let channel = Channels.findOne( { name: channelName } );
-  if ( channel ) {
-    return channel._id;
-  }
+    delete message.destination;
+    if (DEBUG) {
+       console.log(LOG_TAG,"Step 3) _cleanUpMessageBeforeInsert message : ",message);
+    }
 };
 
 let _getUserId = ( username ) => {
-  let user = Meteor.users.findOne( { _id: username } );
-  console.log("_getUserId",user);
-  if ( user ) {
-    return user._id;
-  }
+    let user = Meteor.users.findOne( { _id: username } );
+    if ( user ) {
+        return user._id;
+    }
 };
 
 let _getUserName = ( username ) => {
-  let user = Meteor.users.findOne( { _id: username } );
-  console.log("_getUserId",user);
-  if ( user ) {
-    return user.emails[0].address;
-  }
+    let user = Meteor.users.findOne( { _id: username } );
+    if ( user ) {
+        return user.emails[0].address;
+    }
 };
 
 let _assignDestination = ( message ) => {
-  console.log("_assignDestination message",message)
     message.to = _getUserId( message.destination );
     message.toName = _getUserName(message.destination);
-  console.log("_assignDestination message after",message)
+    if (DEBUG) {
+       console.log(LOG_TAG,"Step 2) _assignDestination message : ",message);
+    }
 };
 
-let _checkIfSelf = ( { destination, owner } ) => {
-  return destination === owner;
+let _checkIfSelf = ( message ) => {
+    console.log("message",message)
+    return message.destination === message.owner;
 };
 
 let _assignOwnerAndTimestamp = ( message ) => {
-  message.owner     = Meteor.userId();
-  message.ownerName = Meteor.user().emails[0].address;
-  message.timestamp = new Date();
-  console.log(message);
+    message.owner     = Meteor.userId();
+    message.ownerName = Meteor.user().emails[0].address;
+    message.timestamp = new Date();
+    if (DEBUG) {
+       console.log(LOG_TAG,"Step 1) _assignOwnerAndTimestamp message : ",message);
+    }
 };
 
 function handleInsert( message ) {
-  console.log("insert message",message);
-  _assignOwnerAndTimestamp( message );
-
-  if ( !_checkIfSelf( message ) ) {
-    console.log("not self");
-    _assignDestination( message );
-    _cleanUpMessageBeforeInsert( message );
-    _insertMessage( message );
-  } else {
-    console.log("sending messages to self");
-    throw new Meteor.Error( '500', 'Can\'t send messages to yourself.' );
-  }
+    if (DEBUG) {
+       console.log(LOG_TAG,"handleInsert message : ",message);
+    }
+    _assignOwnerAndTimestamp( message );
+    if ( !(_checkIfSelf( message )) ) {
+        _assignDestination( message );
+        _cleanUpMessageBeforeInsert( message );
+        _insertMessage( message );
+    } else {
+        if (DEBUG) {
+            console.log(LOG_TAG,"ERROR. SENDING MESSAGE TO SELF IS NOT ALLOWED");
+        }
+        throw new Meteor.Error( '500', 'Can\'t send messages to yourself.' );
+    }
 }
+
+
+export const insertContactMessage = new ValidatedMethod({
+    name : 'insertContactMessage',
+    validate : new SimpleSchema({
+        name : { type: String },
+        email : {type : String},
+        message : {type : String}
+    }).validator(),
+    run({name, email, message}) {
+        console.log("name",name);
+        console.log("email",email);
+        console.log("message",message);
+        const messageToInsert = {
+            name,
+            email,
+            message
+        }
+        console.log("contact messageToInsert",messageToInsert);
+        try {
+            var inserted =  ContactMessages.insert( message );
+            console.log("inserted contact message",inserted);
+        } catch ( exception ) {
+            throw new Meteor.Error( '500', `${ exception }` );
+        }
+    }
+})

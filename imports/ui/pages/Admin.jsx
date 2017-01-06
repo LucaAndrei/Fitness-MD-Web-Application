@@ -4,47 +4,41 @@ import { Accounts } from 'meteor/accounts-base';
 
 import User from '../components/User.jsx';
 
-var _ = require('lodash');
-
-
 export default class Admin extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+    constructor(props) {
+        super(props);
+    }
+
+    renderUsers(users) {
+        console.log("Admin renderUsers");
+        return users.map((user) => {
+            console.log("user", user);
+            var isUserAdmin = Roles.userIsInRole(user._id, 'admin');
+            if(!isUserAdmin) {
+                return (
+                    <li key={user._id}><User user={user} /></li>
+                )
+            }
+        });
+    }
+
+    render() {
+        console.log("Admin this.props", this.props);
+        const {
+            users
+        } = this.props;
 
 
-
-  renderUsers(users) {
-    console.log("Admin renderUsers");
-    return users.map((user) => {
-        console.log("user",user);
-        return <User user={user} key = {user._id} />;
-    });
-  }
-
-  render() {
-    console.log("Admin this.props",this.props);
-    const {
-        users
-    } = this.props;
-
-
-    return (
-        <div>
-      <h4 className="page-header">Users</h4>
-    <table className="table table-bordered">
-      <thead>
-        <tr>
-          <th>Email Address</th>
-          <th className="text-center">Role</th>
-        </tr>
-      </thead>
-      <tbody>
-        {this.renderUsers(users)}
-
-      </tbody>
-    </table>
-    </div>
-    );
-  }
+        return (
+            <div className="content-scrollable container-fluid">
+                <h1>MessagesUserlist</h1>
+                <div className="col-md-6 col-md-offset-3 col-xs-12">
+                    <div className="col-md-12 container_ui__heading"><p>users</p></div>
+                    <ul className="userList">
+                        {this.renderUsers(users)}
+                    </ul>
+                </div>
+            </div>
+        );
+    }
 }

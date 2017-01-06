@@ -1,96 +1,110 @@
 import React from 'react';
 
-import {assignDoctor} from '../../api/users/methods.js'
-
+import { assignDoctor } from '../../api/users/methods.js'
 import { Link } from 'react-router';
 
+let DEBUG = true;
+let LOG_TAG = "imports/ui/components/User";
+
 export default class User extends React.Component {
-  constructor(props) {
-    super(props);
-    console.log("props",props)
-    console.log("this.props",this.props);
-    this.state = {
-        value: props.user.roles[0],
-        isAssigned : props.user.profile.assignedDoctorId ? true : false
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.assign = this.assign.bind(this);
-  }
-
-
-  isCurrentUser(currentUserId) {
-    var isUser = currentUserId === Meteor.userId() ? true : false;
-    console.log("isCurrentUser",isUser);
-    return isUser;
-  }
-
-  currentUserEmail(user) {
-    if (!this.isCurrentUser(user._id)) {
-        return <Link
-              to={`/user/profile/${user._id}`}
-              className="button button--ujarak button--border-thin button--text-thick button--size-s button--border-medium"
-              >
-                            {user.emails[0].address}
-                        </Link>
-    } else {
-        return user.emails[0].address;
+    constructor(props) {
+        super(props);
+        this.state = {
+            isAssigned: props.user.profile.assignedDoctorId ? true : false
+        };
+        this.assign = this.assign.bind(this);
     }
-  }
 
-  handleChange(event) {
-    console.log("handleChange")
-    this.setState({value: event.target.value});
 
-  }
-
-  disableIfAdmin(userId) {
-    console.log("disableIfAdmin");
-    if ( Meteor.userId() === userId ) {
-        console.log("userId is the same");
-        var shouldDisable= Roles.userIsInRole( userId, 'admin' ) ? "disabled" : "";
+    isCurrentUser(currentUserId) {
+        var isUser = currentUserId === Meteor.userId() ? true : false;
+        if (DEBUG) {
+            console.log(LOG_TAG,"isCurrentUser : ",isUser);
+        }
+        return isUser;
     }
-    console.log("shouldDisable",shouldDisable);
-    return shouldDisable;
-  }
 
-  assign() {
-    console.log("assign",this.props);
-    this.setState({isAssigned : !this.state.isAssigned});
-    assignDoctor.call({userId : this.props.user._id, doctorId : Meteor.userId(), shouldAssign : !this.state.isAssigned }, function(error) {
-        console.log("display error",error);
-    });
-  }
-
-  render() {
-    const user = this.props;
-    console.log("User",this.props, this.props.user.emails[0].address);
-    var inputProps = {
-        disabled : this.disableIfAdmin(user.user._id)
+    currentUserEmail(user) {
+        if (!this.isCurrentUser(user._id)) {
+            return (
+                <Link
+                    to = {`/app/profile/${user._id}`}
+                    className = "button button--ujarak button--border-thin button--text-thick button--size-s button--border-medium">
+                    {user.emails[0].address}
+                </Link>
+            )
+        } else {
+            return user.emails[0].address;
+        }
     }
-    console.log("inputProps",inputProps)
-    return (
-        <tr>
-            <td className="text-left text-middle">
-                {this.isCurrentUser(user.user._id)
-                    ? <p><label className="label label-success">You!</label>{this.currentUserEmail(user.user)}</p>
-                    : this.currentUserEmail(user.user) }
-            </td>
-            <td>
-                <select {...inputProps} name="userRole" className="form-control"
-                        value={this.state.value} onChange={this.handleChange}>
-                    <option value="admin">Admin</option>
-                    <option value="manager">Manager</option>
-                    <option value="employee">Employee</option>
-                </select>
-            </td>
-            {!this.isCurrentUser(user.user._id) ?
-            <td><a className="button button--ujarak button--border-thin
-                                        button--text-thick button--size-s button--border-medium button--logout" onClick={this.assign}>
-                           {this.state.isAssigned ? <span className="btn-primary">Remove</span> : <span>assign</span>}
-                      </a></td> : ""}
-        </tr>
-    )
+
+
+
+    assign() {
+        if (DEBUG) {
+            console.log(LOG_TAG,"assign");
+        }
+        this.setState({
+            isAssigned: !this.state.isAssigned
+        });
+        assignDoctor.call({
+            userId: this.props.user._id,
+            doctorId: Meteor.userId(),
+            shouldAssign: !this.state.isAssigned
+        }, function(error) {
+            console.log("display error", error);
+        });
+    }
+
+    /*
+        http://codepen.io/icebob/pen/wMJpaw
+    */
+
+    render() {
+        const user = this.props;
+        if (DEBUG) {
+            console.log(LOG_TAG,"this.props : ",this.props);
+        }
+        return (
+
+            <div className="row user-container">
+                <div className="col-md-10 col-xs-10">
+                    <Link to = {`/app/profile/${this.props.user._id}`}>
+                        <div className="user-info">
+                            <div className="user-image">
+                                <div className="row">
+                                    <div className="col-xs-3 user-image">
+                                        <div className="picture">
+                                            <img className = "img-responsive img-circle" src='https://s3.amazonaws.com/uifaces/faces/twitter/rem/128.jpg' />
+                                        </div>
+                                    </div>
+                                    <div className="col-xs-9">
+                                        <div className="user-name"><span>Mark Brack</span><br /><i className="badge fa fa-check"></i></div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="footer">
+                                        <div className="info col-md-4 col-xs-4"><span>135357<br /><small>Steps</small></span></div>
+                                        <div className="info col-md-4 col-xs-4"><span>55.7<br /><small>Kg</small></span></div>
+                                        <div className="info col-md-4 col-xs-4"><span>13:24:33<br /><small>Time active</small></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </Link>
+                </div>
+                <div className="col-md-2 col-xs-2 user-functions">
+                    <Link to = {`/app/chat/${this.props.user._id}`}>
+                        <div className="functions">
+                            <i className="fa fa-envelope fa-2x"></i>
+                        </div>
+                    </Link>
+                </div>
+            </div>
+
+
+
+
+        )
     }
 }
-

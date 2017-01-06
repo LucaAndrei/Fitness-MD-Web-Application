@@ -1,52 +1,49 @@
 import React from 'react';
 
-import {findUserById} from '../../api/users/methods.js'
+let DEBUG = true;
+let LOG_TAG = "imports/ui/components/ChatMessage";
 
 export default class ChatMessage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  createTimestamp(timestamp) {
-    //console.log("timestamp",timestamp);
-    if ( timestamp ) {
-      let today         = moment().format( 'YYYY-MM-DD' ),
-          datestamp     = moment( timestamp ).format( 'YYYY-MM-DD' ),
-          isBeforeToday = moment( today ).isAfter( datestamp ),
-          format        = isBeforeToday ? 'MMMM Do, YYYY hh:mm a' : 'hh:mm a';
-      var formattedTimestamp =  moment( timestamp ).format( format );
+    constructor(props) {
+        super(props);
     }
-    //console.log("formattedTimestamp",formattedTimestamp);
-    return formattedTimestamp;
-  }
 
-  displayName(messageOwnerId) {
-    //console.log("messageOwnerId",messageOwnerId);
-    var messageOwnerName;
-    findUserById.call({userIdToFind : messageOwnerId }, function(error,result) {
-        console.log("error",error);
-        console.log("result",result);
-        messageOwnerName = result;
-    });
-    //console.log("messageOwnerName",messageOwnerName);
-    return messageOwnerName;
-  }
+    createTimestamp(timestamp) {
+        //console.log("timestamp",timestamp);
+        if (timestamp) {
+            let today = moment().format('YYYY-MM-DD'),
+            datestamp = moment(timestamp).format('YYYY-MM-DD'),
+            isBeforeToday = moment(today).isAfter(datestamp),
+            format = isBeforeToday ? 'MMMM Do, YYYY hh:mm a' : 'hh:mm a';
+            var formattedTimestamp = moment(timestamp).format(format);
+        }
+        if(DEBUG) {
+            console.log(LOG_TAG,"createTimestamp formattedTimestamp : ",formattedTimestamp)
+        }
+        return formattedTimestamp;
+    }
 
-  render() {
-    console.log("ChatMessage",this.props);
-    const {message} = this.props;
-    return (
-    	<div className="message">
-
-      <header>
-        <h4>{message.ownerName} <span>{this.createTimestamp(message.timestamp)}</span></h4>
-      </header>
-
-    <div className="body">
-      {message.message}
-    </div>
-  </div>)
-
-  }
+    render() {
+        if(DEBUG) {
+            console.log(LOG_TAG,"render ChatMesssage this.props: ",this.props)
+        }
+        console.log("ChatMessage", this.props);
+        const {
+            message
+        } = this.props;
+        return (
+            <div className = "message">
+                {message.showHeader
+                    ?
+                        <header>
+                            <h4> {message.ownerName} <span> {this.createTimestamp(message.timestamp)} </span></h4>
+                        </header>
+                    :   ""
+                }
+                <div className = "body">
+                    {message.message}
+                </div>
+            </div>
+        )
+    }
 }
-

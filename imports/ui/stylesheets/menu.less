@@ -1,0 +1,36 @@
+@import '{}/imports/ui/stylesheets/utils.less';
+
+.menu {
+  a {
+    box-shadow: rgba(255,255,255,.15) 0 1px 0 0;
+    display: block;
+    line-height: 1.5em;
+    padding: .75em 5em;
+    position: relative;
+  }
+
+  .menu-item-home {
+  	padding : .75em 2em;
+  }
+
+  [class^="icon-"],
+  [class*=" icon-"] {
+    .font-s2;
+    float: left;
+    margin-left: -1.5rem;
+    margin-right: .5rem;
+    margin-top: .1rem;
+    width: 1em;
+  }
+
+  .menu-item {
+    color: rgba(255,255,255,.4);
+
+    &:hover,
+    &:active,
+    &.active {
+      color: @color-empty;
+      .count-list { background: @color-primary; }
+    }
+  }
+}

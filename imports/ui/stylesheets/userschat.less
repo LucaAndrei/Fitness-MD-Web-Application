@@ -1,0 +1,133 @@
+.admin-page .content-scrollable {
+    background: @color-empty;
+    top: 3em !important;
+}
+
+
+.container_ui__heading{
+  background: #333658;
+  padding : 2em;
+  text-transform : uppercase;
+  color: #aeb1d8;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin : 0;
+}
+.user-container {
+  color : #ccc;
+
+  -moz-transition: opacity 0.2s linear;
+  -o-transition: opacity 0.2s linear;
+  -webkit-transition: opacity 0.2s linear;
+  transition: opacity 0.2s linear;
+
+  -moz-transition: background-color 0.2s linear, color 0.2s linear;
+  -o-transition: background-color 0.2s linear, color 0.2s linear;
+  -webkit-transition: background-color 0.2s linear, color 0.2s linear;
+  transition: background-color 0.2s linear, color 0.2s linear;
+}
+
+.user-image {
+  .picture  {
+    img {
+      height:5rem;
+      width:5rem;
+      padding : 4px;
+      background : #FFFFFF;
+    }
+  }
+}
+
+.badge {
+      margin-top:10px;
+      background-color: green;
+      -moz-transition: border 0.2s linear;
+      -o-transition: border 0.2s linear;
+      -webkit-transition: border 0.2s linear;
+      transition: border 0.2s linear;
+      color: White;
+      font-size: 0.6rem !important;
+      line-height: 1.1rem !important;
+      width: 1.5rem;
+      text-align: center;
+      border: 3px solid White;
+      -moz-border-radius: 1rem;
+      -webkit-border-radius: 1rem;
+      border-radius: 1rem;
+    }
+
+.user-info {
+  padding-left:10px;
+
+  p {
+    margin : 0;
+  }
+
+  .user-name {
+    color:White;
+    text-transform:uppercase;
+    font-weight: 800;
+    text-align : center;
+    margin-top:10px;
+  }
+
+  .user-subject {
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 12px;
+  }
+  .user-message {
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+  .footer {
+    padding-top: 0.8rem;
+    font-size: 0.7rem;
+    color: #CCCCCC;
+
+    .info {
+      text-align:center;
+    }
+  }
+
+}
+
+
+.userList {
+  background:#343841;
+  color:#ccc;
+
+  li {
+    border-bottom : 2px solid black;
+    -moz-transition: background-color 0.2s linear, color 0.2s linear;
+    -o-transition: background-color 0.2s linear, color 0.2s linear;
+    -webkit-transition: background-color 0.2s linear, color 0.2s linear;
+    transition: background-color 0.2s linear, color 0.2s linear;
+
+    &:hover {
+      color: #FFFFFF;
+      background-color: rgba(39, 118, 197, 0.3);
+      .user-image .picture .badge {
+        border: 3px solid rgba(39, 118, 197, 0.6);
+      }
+    }
+  }
+}
+
+.user-functions {
+  .functions {
+    opacity: 0.3;
+    color: #b3b3b3;
+    -moz-transition: opacity 0.2s linear;
+    -o-transition: opacity 0.2s linear;
+    -webkit-transition: opacity 0.2s linear;
+    transition: opacity 0.2s linear;
+
+    &:hover {
+      color : White;
+      opacity:0.7;
+    }
+  }
+}

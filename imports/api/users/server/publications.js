@@ -1,31 +1,31 @@
 import { Meteor } from 'meteor/meteor';
 
+let DEBUG = true;
+let LOG_TAG = "imports/api/users/server/publications";
+
 Meteor.publish( 'users', function() {
-	console.log("publish users.current user id ",this.userId);
-  let isAdmin = Roles.userIsInRole( this.userId, 'admin' );
-  console.log("isAdmin",isAdmin)
-  if ( isAdmin ) {
-    console.log("all users",Meteor.users.find( {}, { fields: { "emails.address": 1, "roles": 1 } } ).fetch())
-    return [
-      Meteor.users.find( {}, { fields: { "emails.address": 1, "roles": 1, "profile" : 1 } } )
-    ];
-  } else {
-    return null;
-  }
+    let isAdmin = Roles.userIsInRole( this.userId, 'admin' );
+    if (DEBUG) {
+        console.log(LOG_TAG,"publish-users this.userId : ",this.userId," >>> isAdmin : ",isAdmin);
+    }
+    if ( isAdmin ) {
+        return [
+            Meteor.users.find(
+                {},
+                {
+                    fields:
+                        {
+                            "emails.address": 1,
+                            "roles": 1,
+                            "profile" : 1,
+                            "pedometer" : 1,
+                            "myField" : 1,
+                            "profilePictureBase64" : 1
+                        }
+                }
+            )
+        ];
+    } else {
+        return this.ready();
+    }
 });
-
-
-Meteor.publish( 'my.users', function() {
-  console.log("publish users.current user id ",this.userId);
-  let isAdmin = Roles.userIsInRole( this.userId, 'admin' );
-  console.log("isAdmin",isAdmin)
-  if ( isAdmin ) {
-    console.log("my.users",Meteor.users.find({'profile.assignedDoctorId' : this.userId}, { fields: { "emails.address": 1, "roles": 1 } } ).fetch())
-    return [
-      Meteor.users.find({'profile.assignedDoctorId' : this.userId}, { fields: { "emails.address": 1, "roles": 1 } } )
-    ];
-  } else {
-    return null;
-  }
-});
-

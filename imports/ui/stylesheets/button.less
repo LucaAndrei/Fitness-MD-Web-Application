@@ -41,15 +41,3 @@
   &[disabled] { opacity: .5; }
 }
 
-.btns-group {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-
-  [class*="btn-"] {
-    .ellipsized;
-    flex: 1;
-
-    & + [class*="btn-"] { margin-left: -1px; }
-  }
-}

@@ -1,43 +1,32 @@
-let _getMessage = ( currentMessage ) => {
-  let message = currentMessage.value;
-  return message.trim();
-};
+let DEBUG = false;
+let LOG_TAG = "client/modules/handle-message-insert";
 
-let _checkIfCanInsert = ( message ) => {
-  console.log("_checkIfCanInsert message",message);
-  return message !== '';
-};
-
-let _buildMessage = ( message, assignedDoctorId ) => {
-  console.log("_buildMessage message",message, assignedDoctorId);
-  return {
-    destination: assignedDoctorId,
-    message: message.value
-  };
-};
-
-let _handleInsert = ( message ) => {
-  console.log("_handleInsert",message);
-  console.log("Meteor",Meteor);
-  Meteor.call( 'insertMessage', message, ( error ) => {
-    if ( error ) {
-      console.log("error",error);
-      alert('error',error.reason);
-      //Bert.alert( error.reason, 'danger' );
-    } else {
-      //event.target.value = '';
+export default function(message, destinationUserId ) {
+    let text      = message.value.trim(),
+        canInsert = (text !== '' ? true : false);
+    if (DEBUG) {
+        console.log(LOG_TAG,"handle-message-insert text : ",text, " >>> canInsert : ",canInsert);
     }
-  });
-};
+    if (canInsert) {
+        let message = {
+            destination : destinationUserId,
+            message : text
+        }
+        if (DEBUG) {
+            console.log(LOG_TAG,"insert message",message);
+        }
+        Meteor.call( 'insertMessage', message, ( error ) => {
+            if ( error ) {
+                console.error(LOG_TAG,"ERROR INSERTING MESSAGE",error);
+            } else {
+                if (DEBUG) {
+                    console.log(LOG_TAG,"MESSAGE WAS INSERTED SUCCESSFULLY" );
+                }
 
-export default function(message, assignedDoctorId ) {
-  console.log("handleMessageInsert",message, assignedDoctorId);
-  let text      = _getMessage( message ),
-      canInsert = _checkIfCanInsert( text );
-  console.log("text",text);
-  console.log("canInsert",canInsert);
-
-  if ( canInsert ) {
-    _handleInsert( _buildMessage( message, assignedDoctorId ), message );
-  }
+                document.getElementById('messageInput').value = '';
+            }
+        });
+    } else {
+        console.error(LOG_TAG,"COULD NOT INSERT MESSAGE. MESSAGE VALUE IS EMPTY");
+    }
 }

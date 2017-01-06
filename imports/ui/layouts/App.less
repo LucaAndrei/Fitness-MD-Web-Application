@@ -1,7 +1,7 @@
 @import '{}/imports/ui/stylesheets/utils.less';
 
 @menu-width: 270px;
-@column: 5.55555%;
+@column: 4.5%;
 
 body {
   .position(absolute, 0, 0, 0, 0);
@@ -20,8 +20,8 @@ body {
   }
 
   @media screen and (min-width: 80em) {
-    left: 2*@column;
-    right: 2*@column;
+    left: @column;
+    right: @column;
   }
 
   // Hide anything offscreen
@@ -43,6 +43,7 @@ body {
 
   @media screen and (min-width: 40em) {
     left: @menu-width;
+    right: @menu-width;
   }
 
   .content-scrollable {
@@ -50,6 +51,7 @@ body {
     transform: translate3d(0, 0, 0);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+
   }
 
   // Toggle menu on mobile
@@ -79,4 +81,31 @@ body {
 
   // Hide overlay on desktop
   @media screen and (min-width: 40em) { display: none; }
+}
+
+
+
+
+
+
+@media (max-width: 767px) {
+  main {
+    padding : 0;
+  }
+}
+
+
+.switch-enter {
+    opacity: 0.01;
+}
+.switch-enter.switch-enter-active {
+    opacity: 1.0;
+    transition: opacity 500ms ease-in;
+}
+.switch-leave {
+    opacity: 1.0;
+}
+.switch-leave.switch-leave-active {
+    opacity: 0;
+    transition: opacity 500ms ease-out;
 }
