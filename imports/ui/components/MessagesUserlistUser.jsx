@@ -10,15 +10,11 @@ export default class MessagesUserlistUser extends React.Component {
         super(props);
     }
 
-
-
     render() {
         const user = this.props;
         if (DEBUG) {
             console.log(LOG_TAG,"this.props : ",this.props);
         }
-        const email = user.user.emails[0].address;
-        const emailLocalPart = email.substring(0, email.indexOf('@'));
         return (
             <div className="row user-container">
                 <div className="col-xs-12">
@@ -31,7 +27,7 @@ export default class MessagesUserlistUser extends React.Component {
                                     </div>
                                 </div>
                                 <div className="col-xs-9">
-                                    <div className="user-name"><span>Mark Brack</span><br /><i className="badge fa fa-check"></i></div>
+                                    <div className="user-name"><span>{user.username}</span><br /><i className="badge fa fa-check"></i></div>
                                 </div>
                             </div>
                             <div className="row">

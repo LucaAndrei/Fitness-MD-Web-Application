@@ -13,13 +13,13 @@ export const insertMessage = new ValidatedMethod({
         message : {type : String}
     }).validator(),
     run({destination, message}) {
-        console.log("destination",destination);
-        console.log("message",message);
+        console.log(LOG_TAG,"destination",destination);
+        console.log(LOG_TAG,"message",message);
         const messageToInsert = {
             destination,
             message
         }
-        console.log("messageToInsert",messageToInsert);
+        console.log(LOG_TAG,"messageToInsert",messageToInsert);
         try {
             handleInsert( messageToInsert );
         } catch ( exception ) {
@@ -30,11 +30,13 @@ export const insertMessage = new ValidatedMethod({
 
 let _insertMessage = ( message ) => {
     if (DEBUG) {
-        console.log("Step 4) _insertMessage message",message)
+        console.log(LOG_TAG,"Step 4) _insertMessage message",message)
     }
-    var inserted =  Messages.insert( message );
-    console.log("inserted",inserted);
-    return inserted;
+    var insertedToMessages =  Messages.insert( message );
+    var insertedToAdvices = Advices.insert(message);
+    console.log(LOG_TAG,"inserted to Messages",insertedToMessages);
+    console.log(LOG_TAG,"inserted to Advices",insertedToAdvices);
+    return insertedToMessages;
 };
 
 
@@ -68,7 +70,7 @@ let _assignDestination = ( message ) => {
 };
 
 let _checkIfSelf = ( message ) => {
-    console.log("message",message)
+    console.log(LOG_TAG,"message",message)
     return message.destination === message.owner;
 };
 
@@ -107,18 +109,18 @@ export const insertContactMessage = new ValidatedMethod({
         message : {type : String}
     }).validator(),
     run({name, email, message}) {
-        console.log("name",name);
-        console.log("email",email);
-        console.log("message",message);
+        console.log(LOG_TAG,"name",name);
+        console.log(LOG_TAG,"email",email);
+        console.log(LOG_TAG,"message",message);
         const messageToInsert = {
             name,
             email,
             message
         }
-        console.log("contact messageToInsert",messageToInsert);
+        console.log(LOG_TAG,"contact messageToInsert",messageToInsert);
         try {
             var inserted =  ContactMessages.insert( message );
-            console.log("inserted contact message",inserted);
+            console.log(LOG_TAG,"inserted contact message",inserted);
         } catch ( exception ) {
             throw new Meteor.Error( '500', `${ exception }` );
         }

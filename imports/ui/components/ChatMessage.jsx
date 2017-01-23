@@ -9,7 +9,7 @@ export default class ChatMessage extends React.Component {
     }
 
     createTimestamp(timestamp) {
-        //console.log("timestamp",timestamp);
+        //console.log(LOG_TAG,"timestamp",timestamp);
         if (timestamp) {
             let today = moment().format('YYYY-MM-DD'),
             datestamp = moment(timestamp).format('YYYY-MM-DD'),
@@ -27,7 +27,6 @@ export default class ChatMessage extends React.Component {
         if(DEBUG) {
             console.log(LOG_TAG,"render ChatMesssage this.props: ",this.props)
         }
-        console.log("ChatMessage", this.props);
         const {
             message
         } = this.props;

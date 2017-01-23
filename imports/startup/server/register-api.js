@@ -3,3 +3,6 @@ import '../../api/messages/server/publications.js';
 
 import '../../api/users/server/publications.js';
 import '../../api/users/methods.js';
+
+import '../../api/advices/server/publications.js';
+import '../../api/advices/methods.js';

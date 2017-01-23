@@ -48,45 +48,38 @@ export default class App extends React.Component {
         const clonedChildren = children && React.cloneElement(children, {
             key: location.pathname
         });
-        console.log("clonedChildren",clonedChildren);
+        console.log(LOG_TAG,"clonedChildren",clonedChildren);
 
 
         return (
             <div id="container" className={menuOpen ? 'menu-open' : ''}>
                 <section id="menu">
-                  <Menu user={user} logout={this.logout} />
+                    <Menu user={user} logout={this.logout} />
                 </section>
                 <div className="content-overlay" onClick={closeMenu} />
                 <div id="content-container">
-                  <nav className="list-header">
-                    <MobileMenu />
-                  </nav>
-                  <div className="admin-page">
-                  <ReactCSSTransitionGroup
-                    transitionName="fade"
-                    transitionEnterTimeout={200}
-                    transitionLeaveTimeout={200}>
-                    {loading
-                      ? <Loading key="loading" />
-                      : clonedChildren}
-                  </ReactCSSTransitionGroup>
-                  </div>
+                    <nav className="list-header">
+                        <MobileMenu />
+                    </nav>
+                    <div className="admin-page">
+                        <ReactCSSTransitionGroup
+                            transitionName="fade"
+                            transitionEnterTimeout={200}
+                            transitionLeaveTimeout={200}>
+                            {loading
+                                ? <Loading key="loading" />
+                                : clonedChildren}
+                        </ReactCSSTransitionGroup>
+                    </div>
                 </div>
-
-              </div>
+            </div>
         );
     }
 }
 
 App.propTypes = {
-  //user: React.PropTypes.object,      // current meteor user
-  //connected: React.PropTypes.bool,   // server connection status
-  loading: React.PropTypes.bool,     // subscription status
-  menuOpen: React.PropTypes.bool,    // is side menu open?
-  //lists: React.PropTypes.array,      // all lists visible to the current user
-  //children: React.PropTypes.element, // matched child route component
-  //location: React.PropTypes.object,  // current router location
-  //params: React.PropTypes.object,    // parameters of the current route
+    loading: React.PropTypes.bool,     // subscription status
+    menuOpen: React.PropTypes.bool
 };
 
 App.contextTypes = {

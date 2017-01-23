@@ -6,9 +6,9 @@ import Menu from '../components/Menu.jsx';
 import Loading from '../components/Loading.jsx';
 import MobileMenu from '../components/MobileMenu.jsx';
 let DEBUG = true;
-let LOG_TAG = "imports/ui/layouts/App";
+let LOG_TAG = "imports/ui/layouts/AuthenticatedApp";
 
-export default class App extends React.Component {
+export default class AuthenticatedApp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,20 +23,20 @@ export default class App extends React.Component {
 
 
     componentDidUpdate(prevProps, prevState) {
-      console.log("prevProps",prevProps);
-      console.log("prevState",prevState);
-      console.log("props after update",this.props);
-      if (this.props.user == null || this.props.user == undefined) {
-        this.context.router.push("/signin");
-      }
+        console.log(LOG_TAG,"prevProps",prevProps);
+        console.log(LOG_TAG,"prevState",prevState);
+        console.log(LOG_TAG,"props after update",this.props);
+        if (this.props.user == null || this.props.user == undefined) {
+            this.context.router.push("/signin");
+        }
 
-  }
+    }
 
-  shouldComponentUpdate(nextProps, nextState) {
-        console.log("shouldComponentUpdate")
-        console.log("nextProps",nextProps)
-        console.log("nextState",nextState);
-        console.log("this.state",this.state)
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log(LOG_TAG,"shouldComponentUpdate")
+        console.log(LOG_TAG,"nextProps",nextProps)
+        console.log(LOG_TAG,"nextState",nextState);
+        console.log(LOG_TAG,"this.state",this.state)
         return true;
     }
 
@@ -70,47 +70,40 @@ export default class App extends React.Component {
             key: location.pathname,
             users: allUsers
         });
-        console.log("clonedChildren",clonedChildren);
+        console.log(LOG_TAG,"clonedChildren",clonedChildren);
 
 
         return (
             <div id="container" className={menuOpen ? 'menu-open' : ''}>
                 <section id="menu">
-                  <Menu user={user} logout={this.logout} />
+                    <Menu user={user} logout={this.logout} />
                 </section>
                 <div className="content-overlay" onClick={closeMenu} />
                 <div id="content-container">
-                  <nav className="list-header">
-                    <MobileMenu />
-                  </nav>
-                  <div className="admin-page">
-                  <ReactCSSTransitionGroup
-                    transitionName="fade"
-                    transitionEnterTimeout={200}
-                    transitionLeaveTimeout={200}>
-                    {loading
-                      ? <Loading key="loading" />
-                      : clonedChildren}
-                  </ReactCSSTransitionGroup>
-                  </div>
+                    <nav className="list-header">
+                        <MobileMenu />
+                    </nav>
+                    <div className="admin-page">
+                        <ReactCSSTransitionGroup
+                            transitionName="fade"
+                            transitionEnterTimeout={200}
+                            transitionLeaveTimeout={200}>
+                            {loading
+                            ? <Loading key="loading" />
+                            : clonedChildren}
+                        </ReactCSSTransitionGroup>
+                    </div>
                 </div>
-
-              </div>
+            </div>
         );
     }
 }
 
-App.propTypes = {
-  //user: React.PropTypes.object,      // current meteor user
-  //connected: React.PropTypes.bool,   // server connection status
-  loading: React.PropTypes.bool,     // subscription status
-  menuOpen: React.PropTypes.bool,    // is side menu open?
-  //lists: React.PropTypes.array,      // all lists visible to the current user
-  //children: React.PropTypes.element, // matched child route component
-  //location: React.PropTypes.object,  // current router location
-  //params: React.PropTypes.object,    // parameters of the current route
+AuthenticatedApp.propTypes = {
+    loading: React.PropTypes.bool,     // subscription status
+    menuOpen: React.PropTypes.bool
 };
 
-App.contextTypes = {
+AuthenticatedApp.contextTypes = {
     router: React.PropTypes.object,
 };

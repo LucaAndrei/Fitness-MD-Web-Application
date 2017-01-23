@@ -7,7 +7,6 @@ import AuthPageJoin from '../../ui/pages/AuthPageJoin.jsx';
 
 import Index from '../../ui/pages/Index.jsx';
 
-//import AdminContainer from '../../ui/containers/AdminContainer.jsx';
 import Admin from '../../ui/pages/Admin.jsx';
 
 import About from '../../ui/pages/About.jsx';
@@ -18,21 +17,26 @@ import UserProfile from '../../ui/pages/UserProfile.jsx';
 
 import ChatContainer from '../../ui/containers/ChatContainer.jsx';
 
+const closeMenuIfOpen = function() {
+    if(Session.get('menuOpen')) {
+        Session.set({ menuOpen : false });
+    }
+}
 
 export const renderRoutes = () => (
     <Router history={browserHistory}>
         <Route path="/" component={AppContainer}>
-            <IndexRoute component={Index} />
-            <Route path="signin" component={AuthPageSignIn} />
-            <Route path="join" component={AuthPageJoin} />
-            <Route path="about" component={About} />
-            <Route path="contact" component={Contact} />
+            <IndexRoute component={Index} onEnter={closeMenuIfOpen}/>
+            <Route path="signin" component={AuthPageSignIn} onEnter={closeMenuIfOpen}/>
+            <Route path="join" component={AuthPageJoin} onEnter={closeMenuIfOpen}/>
+            <Route path="about" component={About} onEnter={closeMenuIfOpen}/>
+            <Route path="contact" component={Contact} onEnter={closeMenuIfOpen}/>
         </Route>
         <Route path="/app" component={AuthenticatedAppContainer}>
-            <Route path="chat/:interlocutorId" component={ChatContainer} />
-            <Route path="admin" component={Admin} />
-            <Route path="profile/:userId" component={UserProfile} />
-            <Route path="messages" component={MessagesUserlist} />
+            <Route path="chat/:interlocutorId" component={ChatContainer} onEnter={closeMenuIfOpen}/>
+            <Route path="admin" component={Admin} onEnter={closeMenuIfOpen}/>
+            <Route path="profile/:userId" component={UserProfile} onEnter={closeMenuIfOpen}/>
+            <Route path="messages" component={MessagesUserlist} onEnter={closeMenuIfOpen}/>
         </Route>
     </Router>
 );

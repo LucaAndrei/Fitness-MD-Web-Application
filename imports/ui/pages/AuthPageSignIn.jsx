@@ -12,18 +12,14 @@ var _ = require('lodash');
 
 import AuthPage from './AuthPage.jsx';
 
+let LOG_TAG = "imports/ui/pages/SignInPage";
+
 export default class SignInPage extends Component {
     constructor() {
         super();
-        console.log("SignInPage constructor");
-        console.log("Object", Object);
-        console.log("this.state before", this.state);
         this.state = _.assign(this.state, {
             errors: {}
         });
-        //this.state = _.assign(this.state, { errors: {} });
-        console.log("this.state after", this.state);
-
         this.onSubmit = this.onSubmit.bind(this);
     }
 
@@ -34,8 +30,8 @@ export default class SignInPage extends Component {
         const password = this.password.value;
         const errors = {};
 
-        console.log("email", email);
-        console.log("password", password);
+        console.log(LOG_TAG,"email", email);
+        console.log(LOG_TAG,"password", password);
 
         if (!email) {
             errors.email = "email required";
@@ -48,7 +44,6 @@ export default class SignInPage extends Component {
             errors
         });
         if (_.keys(errors).length) {
-            console.log("return boss");
             return;
         }
 
@@ -71,16 +66,14 @@ export default class SignInPage extends Component {
         } = this.state;
         const errorMessages = _.keys(errors).map(key => errors[key]);
         const errorClass = key => errors[key] && 'error';
-        const link = ( <
-            p className = "message"> Not registered ?
-            <
-            Link to = "/join"
-            className = "link-auth-alt"> Create an account </Link> <
-            /p>
+        const link = (
+            <Link to = "/join" className = "link-auth-alt">Need an account? Join Now.</Link>
         );
         const content = (
-            <div className = "auth-page">
-                <div className = "wrapper-auth">
+            <div className = "form-page">
+                <div className = "wrapper-form-page wrapper-authentication">
+                    <h1 className = "form-page-title">Sign In.</h1>
+                    <p className = "form-page-subtitle">Signing in allows you to view your profile</p>
                     <form onSubmit = {this.onSubmit}>
                         <div className = "list-errors">
                             {
@@ -106,15 +99,7 @@ export default class SignInPage extends Component {
                 </div>
             </div>
         );
-
-
-        console.log("content", content);
-        console.log("link", link);
-
-        return <AuthPage content = {
-            content
-        }
-        />;
+        return <AuthPage content = {content}/>;
     }
 }
 

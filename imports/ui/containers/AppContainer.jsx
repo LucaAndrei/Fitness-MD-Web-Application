@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-// XXX: Session
 import { Session } from 'meteor/session';
 import { createContainer } from 'meteor/react-meteor-data';
 

@@ -26,3 +26,4 @@ Meteor.publish('messages', function(interlocutorId) {
 	    );
 	} else return this.ready();
 });
+

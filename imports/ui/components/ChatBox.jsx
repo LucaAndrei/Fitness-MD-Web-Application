@@ -16,14 +16,13 @@ let LOG_TAG = "imports/ui/components/ChatBox";
 export default class ChatBox extends React.Component {
     constructor(props) {
         super(props);
-
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     renderMessages(messages) {
-        console.log("renderMessages", messages);
+        console.log(LOG_TAG,"renderMessages", messages);
         return messages.map((message) => {
-            console.log("renderMessages message", message);
+            console.log(LOG_TAG,"renderMessages message", message);
             return <ChatMessage key = {message._id} message = {message} />;
         });
 
@@ -31,7 +30,7 @@ export default class ChatBox extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        console.log("handleSubmit this", this);
+        console.log(LOG_TAG,"handleSubmit this", this);
         var path = this.props.location.pathname;
         var toUser = path.substring(path.lastIndexOf('/') + 1)
         handleMessageInsert(this.message, toUser);

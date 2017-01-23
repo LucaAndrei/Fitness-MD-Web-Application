@@ -1,11 +1,11 @@
 import React from 'react';
 
+var Spinner = require('react-spinkit');
+
 class Loading extends React.Component {
     render() {
-        return ( 
-        	<img src = "/logo-todos.svg"
-            	className = "loading-app"
-            	alt = "asd" />
+        return (
+        	<div className="loader">Loading...</div>
         );
     }
 }

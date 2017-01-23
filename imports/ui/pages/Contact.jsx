@@ -21,7 +21,7 @@ export default class Contact extends React.Component {
 
     onSubmit(event) {
         event.preventDefault();
-        console.log("this", this);
+        console.log(LOG_TAG, "onSubmit this", this);
         const name = this.name.value;
         const email = trimInput(this.email.value);
         const message = this.message.value;
@@ -38,8 +38,8 @@ export default class Contact extends React.Component {
         }
 
 
-        console.log("email", email);
-        console.log("message", message);
+        console.log(LOG_TAG, "email", email);
+        console.log(LOG_TAG, "message", message);
         this.setState({
             errors
         });
@@ -64,9 +64,6 @@ export default class Contact extends React.Component {
         });
     }
 
-
-
-
     render() {
         const user = this.props;
         if (DEBUG) {
@@ -83,10 +80,10 @@ export default class Contact extends React.Component {
         return (
             <div className = "content-scrollable">
                 <div className="container-fluid">
-                    <h1>Contact</h1>
-                    <div className = "contact-page">
-                        <div className = "wrapper-contact">
-                            <h1 className = "title-contact">Contact</h1>
+                    <div className = "form-page">
+                        <div className = "wrapper-form-page wrapper-contact">
+                            <h1 className = "form-page-title">Contact.</h1>
+                            <p className = "form-page-subtitle">Send us a message. Tell us how we can improve</p>
                             <form onSubmit = {this.onSubmit}>
                                 <div className = "list-errors">
                                     {errorMessages.map(msg => (
@@ -130,7 +127,6 @@ export default class Contact extends React.Component {
                     </div>
                 </div>
             </div>
-
         )
     }
 }

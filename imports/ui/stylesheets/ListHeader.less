@@ -1,0 +1,14 @@
+@import '{}/imports/ui/stylesheets/utils.less';
+
+.list-header {
+    background: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%);
+    height: 3em;
+
+    text-align: center;
+    @media screen and (min-width: 40em) { text-align: left; }
+
+    // Hide & show options and nav icons
+    @media screen and (min-width: 40em) {
+        .nav-group { display: none !important; }
+    }
+}

@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-// XXX: Session
 import { Session } from 'meteor/session';
 import { createContainer } from 'meteor/react-meteor-data';
 
@@ -10,8 +9,6 @@ let DEBUG = true;
 let LOG_TAG = "imports/ui/containers/ChatContainer";
 
 export default createContainer(({ params: { interlocutorId } }) => {
-
-
     const messagesHandle = Meteor.subscribe('messages', interlocutorId);
 
     if (DEBUG) {

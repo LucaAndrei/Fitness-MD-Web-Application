@@ -15,6 +15,7 @@
   margin : 0;
 }
 .user-container {
+  padding : 10px;
   color : #ccc;
 
   -moz-transition: opacity 0.2s linear;
@@ -31,11 +32,18 @@
 .user-image {
   .picture  {
     img {
-      height:5rem;
-      width:5rem;
-      padding : 4px;
-      background : #FFFFFF;
+      height:3rem;
+      width:3rem;
     }
+    @media (min-width: 768px) {
+      img {
+        height:5rem;
+        width:5rem;
+        padding : 4px;
+        background : #FFFFFF;
+      }
+    }
+
   }
 }
 
@@ -47,15 +55,45 @@
       -webkit-transition: border 0.2s linear;
       transition: border 0.2s linear;
       color: White;
-      font-size: 0.6rem !important;
-      line-height: 1.1rem !important;
-      width: 1.5rem;
+      font-size: 0.4rem !important;
+      line-height: 0.6rem !important;
+      width: 1rem;
       text-align: center;
       border: 3px solid White;
       -moz-border-radius: 1rem;
       -webkit-border-radius: 1rem;
       border-radius: 1rem;
     }
+
+@media (min-width: 768px) {
+  .badge {
+      font-size: 0.6rem !important;
+      line-height: 1.1rem !important;
+      width: 1.5rem;
+
+    }
+
+    .footer {
+      margin-right : -110px;
+    }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    margin-right : -70px;
+  }
+}
+
+.footer {
+  padding-top: 0.8rem;
+      font-size: 0.7rem;
+      color: #CCCCCC;
+
+      .info {
+        text-align:center;
+      }
+}
+
 
 .user-info {
   padding-left:10px;
@@ -81,17 +119,6 @@
     font-weight: 600;
     font-size: 12px;
   }
-
-  .footer {
-    padding-top: 0.8rem;
-    font-size: 0.7rem;
-    color: #CCCCCC;
-
-    .info {
-      text-align:center;
-    }
-  }
-
 }
 
 

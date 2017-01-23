@@ -8,13 +8,44 @@ Meteor.publish( 'users', function() {
     if (DEBUG) {
         console.log(LOG_TAG,"publish-users this.userId : ",this.userId," >>> isAdmin : ",isAdmin);
     }
-    if ( isAdmin ) {
-        return [
-            Meteor.users.find(
+    console.log("all",Meteor.users.find(
                 {},
                 {
                     fields:
                         {
+                            "username" : 1,
+                            "emails.address": 1,
+                            "roles": 1,
+                            "profile" : 1,
+                            "pedometer" : 1,
+                            "myField" : 1,
+                            "profilePictureBase64" : 1
+                        }
+                }
+            ).fetch())
+    console.log("no admin",Meteor.users.find(
+                {roles : {$nin : ["admin"]}},
+                {
+                    fields:
+                        {
+                            "username" : 1,
+                            "emails.address": 1,
+                            "roles": 1,
+                            "profile" : 1,
+                            "pedometer" : 1,
+                            "myField" : 1,
+                            "profilePictureBase64" : 1
+                        }
+                }
+            ).fetch());
+    if ( isAdmin ) {
+        return [
+            Meteor.users.find(
+                {roles : {$nin : ["admin"]}},
+                {
+                    fields:
+                        {
+                            "username" : 1,
                             "emails.address": 1,
                             "roles": 1,
                             "profile" : 1,

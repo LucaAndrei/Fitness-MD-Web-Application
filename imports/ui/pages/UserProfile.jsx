@@ -1,18 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
-import { Accounts } from 'meteor/accounts-base';
-//import { BarChart } from 'react-easy-chart';
-
-import User from '../components/User.jsx';
-import ChatBox from '../components/ChatBox.jsx';
 
 import * as d3 from "d3";
 import d3Format from "d3-time-format";
-
-var _ = require('lodash');
-
-var cx = require('classnames');
 
 let DEBUG = true;
 let LOG_TAG = "imports/ui/pages/UserProfile";
@@ -23,18 +14,16 @@ import BarChart from 'react-bar-chart';
 import {FaAngleLeft, FaAngleRight} from 'react-icons/lib/fa';
 
 const data = [
-  {text: '18-Dec-16', value: 500},
-  {text: '19-Dec-16', value: 0},
-  {text: '20-Dec-16', value: 300},
-  {text: '21-Dec-16', value: 127},
-  {text: '22-Dec-16', value: 27},
-  {text: '23-Dec-16', value: 58},
-  {text: '24-Dec-16', value: 399}
+    {text: '18-Dec-16', value: 500},
+    {text: '19-Dec-16', value: 0},
+    {text: '20-Dec-16', value: 300},
+    {text: '21-Dec-16', value: 127},
+    {text: '22-Dec-16', value: 27},
+    {text: '23-Dec-16', value: 58},
+    {text: '24-Dec-16', value: 399}
 ];
 
 const margin = {top: 20, right: 20, bottom: 30, left: 40};
-
-
 
 // docs : http://rma-consulting.github.io/react-easy-chart/bar-chart/index.html
 
@@ -72,7 +61,7 @@ export default class UserProfile extends React.Component {
     handleResize() {
 
         let elem = ReactDOM.findDOMNode(this);
-        console.log("handleResize :",elem.offsetWidth);
+        console.log(LOG_TAG,"handleResize :",elem.offsetWidth);
         this.setState({
             windowWidth: window.innerWidth - 100,
             componentWidth: elem.offsetWidth
@@ -82,7 +71,7 @@ export default class UserProfile extends React.Component {
     componentDidMount() {
         window.addEventListener('resize', this.handleResize);
         this.handleResize();
-        console.log("componentDidMount");
+        console.log(LOG_TAG,"componentDidMount");
         this.setState({
             /*stepsValues : {
                 minSteps : this.minStepsForPeriod(this.renderUserData(this.props.params.userId)),
@@ -97,12 +86,12 @@ export default class UserProfile extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        console.log("shouldComponentUpdate")
-        console.log("nextProps",nextProps)
-        console.log("nextState",nextState);
-        console.log("this.state",this.state)
+        console.log(LOG_TAG,"shouldComponentUpdate")
+        console.log(LOG_TAG,"nextProps",nextProps)
+        console.log(LOG_TAG,"nextState",nextState);
+        console.log(LOG_TAG,"this.state",this.state)
         var areArraysEqual = arraysEqual(this.state.stepsData, nextState.stepsData);
-        console.log("areArraysEqual",areArraysEqual);
+        console.log(LOG_TAG,"areArraysEqual",areArraysEqual);
         if(
             (
                 (nextState.timeRange.inferiorLimit != this.state.timeRange.inferiorLimit) && (nextState.timeRange.superiorLimit != this.state.timeRange.superiorLimit)
@@ -111,16 +100,16 @@ export default class UserProfile extends React.Component {
 
 
         ) {
-            console.log("component should update")
+            console.log(LOG_TAG,"component should update")
             return true;//should be true - testing purposes
         } else {
-            console.log("component should not update;")
+            console.log(LOG_TAG,"component should not update;")
             return false;
         }
     }
 
     componentDidUpdate() {
-        console.log("componentDidUpdate",this.state);
+        console.log(LOG_TAG,"componentDidUpdate",this.state);
 
         this.setState({
             stepsData : this.calculateStepsForWeek(this.renderUserData(this.props.params.userId))
@@ -128,60 +117,60 @@ export default class UserProfile extends React.Component {
     }
 
     calculateStepsForWeek(profile) {
-        console.log("calculateStepsForWeek",profile);
+        console.log(LOG_TAG,"calculateStepsForWeek",profile);
         console.log(this.state);
         var xDomainRange = this.state.timeRange;
-        console.log("calculateStepsForWeek xDomainRange",xDomainRange);
+        console.log(LOG_TAG,"calculateStepsForWeek xDomainRange",xDomainRange);
 
         var datePast = xDomainRange.inferiorLimit;
         var parsedData = d3.time.format("%d-%b-%y").parse(datePast);
         var longDatePast = new Date(parsedData);
-        console.log("longDatePast",longDatePast.getTime());
+        console.log(LOG_TAG,"longDatePast",longDatePast.getTime());
 
         var dateFuture = xDomainRange.superiorLimit;
         var parsedDataFuture = d3.time.format("%d-%b-%y").parse(dateFuture);
         var longDateFuture = new Date(parsedDataFuture);
-        console.log("longDateFuture",longDateFuture.getTime());
+        console.log(LOG_TAG,"longDateFuture",longDateFuture.getTime());
         var myArr = [];
         var hasDataBefore = false;
         var hasDataAfter = false;
 
         for(var i = 0; i < profile.pedometer.length ; i++) {
             var dateProfile = profile.pedometer[i].date;
-            console.log("date[" + i+"] : ",dateProfile);
+            console.log(LOG_TAG,"date[" + i+"] : ",dateProfile);
             if(dateProfile >= longDatePast.getTime() && dateProfile <= longDateFuture.getTime()) {
-                console.log("in time");
+                console.log(LOG_TAG,"in time");
                 var dateFromProfile = new Date(dateProfile);
 
                 let yr = dateFromProfile.getFullYear() % 100;
                 let formattedDaysAgo = dateFromProfile.getDate()+"-"+monthNames[dateFromProfile.getMonth()]+"-"+yr;
-                console.log("dateFromProfile.getDate()",dateFromProfile.getDate());
-                console.log("monthNames[dateFromProfile.getMonth()]",monthNames[dateFromProfile.getMonth()]);
-                console.log("formattedDaysAgo",formattedDaysAgo);
+                console.log(LOG_TAG,"dateFromProfile.getDate()",dateFromProfile.getDate());
+                console.log(LOG_TAG,"monthNames[dateFromProfile.getMonth()]",monthNames[dateFromProfile.getMonth()]);
+                console.log(LOG_TAG,"formattedDaysAgo",formattedDaysAgo);
 
-                console.log("computed day",new Date(Date.UTC(yr,dateFromProfile.getMonth(), dateFromProfile.getDate())))
+                console.log(LOG_TAG,"computed day",new Date(Date.UTC(yr,dateFromProfile.getMonth(), dateFromProfile.getDate())))
 
                 let data = {
                     text : formattedDaysAgo,
                     value : profile.pedometer[i].steps
                 }
-                console.log("data",data)
+                console.log(LOG_TAG,"data",data)
                 myArr.push(data);
             } else if (dateProfile <= longDatePast.getTime()) {
-                console.log("before");
+                console.log(LOG_TAG,"before");
                 hasDataBefore = true;
             } else if (dateProfile >= longDateFuture.getTime()) {
-                console.log("after");
+                console.log(LOG_TAG,"after");
                 hasDataAfter = true;
             }
 
 
 
         }
-        console.log("hasDataBefore : ",hasDataBefore);
-        console.log("hasDataAfter : ",hasDataAfter);
+        console.log(LOG_TAG,"hasDataBefore : ",hasDataBefore);
+        console.log(LOG_TAG,"hasDataAfter : ",hasDataAfter);
         if (hasDataBefore == false) {
-            console.log("disable button left");
+            console.log(LOG_TAG,"disable button left");
             this.setState({
                 disableButtonLeft : "pointer-events"
             })
@@ -192,7 +181,7 @@ export default class UserProfile extends React.Component {
             })
         }
         if(hasDataAfter == false) {
-            console.log("disable button right");
+            console.log(LOG_TAG,"disable button right");
             this.setState({
                 disableButtonRight : "pointer-events"
             })
@@ -202,7 +191,7 @@ export default class UserProfile extends React.Component {
             })
         }
 
-        console.log("myArr",myArr);
+        console.log(LOG_TAG,"myArr",myArr);
         return myArr;
 
     }
@@ -264,16 +253,16 @@ export default class UserProfile extends React.Component {
                         min = nrSteps;
                     }
                 }
-                console.log("min : ",min);
+                console.log(LOG_TAG,"min : ",min);
                 return min;
             } else if(profile.pedometer.length == 1) {
-                console.log("min is : ",profile.pedometer[0].steps - 50)
+                console.log(LOG_TAG,"min is : ",profile.pedometer[0].steps - 50)
                 return profile.pedometer[0].steps - 50;
             } else return 0;
 
 
         } else {
-            console.log("profile is undefined");
+            console.log(LOG_TAG,"profile is undefined");
             return 0;
         }*/
         return 0;
@@ -289,14 +278,14 @@ export default class UserProfile extends React.Component {
                         max = nrSteps;
                     }
                 }
-                console.log("max : ",max);
+                console.log(LOG_TAG,"max : ",max);
                 return max+50;
             } /*else if(profile.pedometer.length == 1) {
-                console.log("max is : ",profile.pedometer[0].steps +100)
+                console.log(LOG_TAG,"max is : ",profile.pedometer[0].steps +100)
                 return profile.pedometer[0].steps + 100;
             } else return 100;*/
         } else {
-            console.log("profile is undefined");
+            console.log(LOG_TAG,"profile is undefined");
             return 0;
         }
     }
@@ -310,15 +299,15 @@ export default class UserProfile extends React.Component {
     }
 
     handleBarClick(element, id){
-        console.log("element",element);
-        console.log("id",id);
+        console.log(LOG_TAG,"element",element);
+        console.log(LOG_TAG,"id",id);
         //this.setState({dataDisplay: `The value on the ${d.x} is ${d.y}`})
     }
 
     mouseOverHandler(element, id){
-        console.log("mouseOverHandler");
-        console.log("element",element);
-        console.log("id",id);
+        console.log(LOG_TAG,"mouseOverHandler");
+        console.log(LOG_TAG,"element",element);
+        console.log(LOG_TAG,"id",id);
 
         //this.setState({dataDisplay: `The value on the ${element.text} is ${element.value}`})
     }
@@ -339,7 +328,7 @@ export default class UserProfile extends React.Component {
         }
         var profile = this.renderUserData(this.props.params.userId);
         console.log(LOG_TAG,"profile : ",profile);
-        console.log("this.state",this.state)
+        console.log(LOG_TAG,"this.state",this.state)
         var dateNow = new Date();
         var date = dateNow.getDate()+"-"+monthNames[dateNow.getMonth()]+"-"+dateNow.getFullYear()%100;
 
@@ -490,15 +479,15 @@ function arraysEqual(arr1, arr2) {
     if(arr1.length !== arr2.length)
         return false;
     for(var i = arr1.length; i--;) {
-        console.log("arr1["+i+"] : ",arr1[i]);
-        console.log("arr2["+i+"] : ",arr2[i]);
+        console.log(LOG_TAG,"arr1["+i+"] : ",arr1[i]);
+        console.log(LOG_TAG,"arr2["+i+"] : ",arr2[i]);
 
         if((arr1[i].text !== arr2[i].text) || (arr1[i].value !== arr2[i].value)) {
 
-            console.log("not equal");
+            console.log(LOG_TAG,"not equal");
             return false;
         } else {
-            console.log("are equal");
+            console.log(LOG_TAG,"are equal");
         }
     }
 

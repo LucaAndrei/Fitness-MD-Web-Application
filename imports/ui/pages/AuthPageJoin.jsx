@@ -11,6 +11,8 @@ import AuthPage from './AuthPage.jsx';
 
 var _ = require('lodash');
 
+let LOG_TAG = "imports/ui/pages/JoinPage";
+
 
 export default class JoinPage extends React.Component {
     constructor(props) {
@@ -24,7 +26,8 @@ export default class JoinPage extends React.Component {
 
     onSubmit(event) {
         event.preventDefault();
-        console.log("this", this);
+        console.log(LOG_TAG,"onSubmit this", this);
+        const username = this.username.value;
         const email = trimInput(this.email.value);
         const password = this.password.value;
         const confirm = this.confirm.value;
@@ -42,11 +45,14 @@ export default class JoinPage extends React.Component {
         if (confirm !== password) {
             errors.confirm = "password confirm";
         }
+        if (!username) {
+            errors.username = "username required";
+        }
 
-
-        console.log("email", email);
-        console.log("password", password);
-        console.log("confirm", confirm);
+        console.log(LOG_TAG,"username", username);
+        console.log(LOG_TAG,"email", email);
+        console.log(LOG_TAG,"password", password);
+        console.log(LOG_TAG,"confirm", confirm);
         this.setState({
             errors
         });
@@ -54,20 +60,16 @@ export default class JoinPage extends React.Component {
             return;
         }
 
-        let user = {
+        Accounts.createUser({
+            username,
             email,
             password,
-            profile: {
+            profile : {
                 assignedDoctorId: undefined
             }
-        }
-
-
-
-        Accounts.createUser({
-            user
         }, (err) => {
             if (err) {
+                console.log(LOG_TAG,"user",user);
                 this.setState({
                     errors: {
                         none: err.reason
@@ -86,17 +88,15 @@ export default class JoinPage extends React.Component {
         const errorClass = key => errors[key] && 'error';
 
         const link = (
-                <Link to = "/signin" className = "link-auth-alt">
-                    "sign in here"
-                </Link>
+                <Link to = "/signin" className = "link-auth-alt">Have an account? Sign in</Link>
         );
 
         const content = (
 
-            <div className = "auth-page">
-                <div className = "wrapper-auth">
-                    <h1 className = "title-auth">"Join" </h1>
-                    <p className = "subtitle-auth">"join reason" </p>
+            <div className = "form-page">
+                <div className = "wrapper-form-page wrapper-authentication">
+                    <h1 className = "form-page-title">Join.</h1>
+                    <p className = "form-page-subtitle">Joining allows you to manage your profile</p>
                     <form onSubmit = {this.onSubmit}>
                         <div className = "list-errors">
                             {errorMessages.map(msg => (
@@ -106,34 +106,47 @@ export default class JoinPage extends React.Component {
                                 ))
                             }
                         </div>
+                        <div className = {`input-symbol ${errorClass('username')}`}>
+                            <input
+                                type = "text"
+                                name = "username"
+                                ref = {(c) => {
+                                    this.username = c;
+                                }}
+                                placeholder = "name"
+                            />
+                        </div>
                         <div className = {`input-symbol ${errorClass('email')}`}>
-                            <input type = "email"
-                                    name = "email"
-                                    ref = {(c) => {
-                                                        this.email = c;
-                                                }
-                                        }
-                                    placeholder = "username" />
+                            <input
+                                type = "email"
+                                name = "email"
+                                ref = {(c) => {
+                                    this.email = c;
+                                }}
+                                placeholder = "email"
+                            />
                         </div>
                         <div className = {`input-symbol ${errorClass('password')}`}>
-                            <input type = "password"
-                                    name = "password"
-                                    ref = {
-                                        (c) => {
-                                            this.password = c;
-                                        }
-                                    }
-                                    placeholder = "password" />
+                            <input
+                                type = "password"
+                                name = "password"
+                                ref = {
+                                    (c) => {
+                                        this.password = c;
+                                    }}
+                                placeholder = "password"
+                            />
                         </div>
                         <div className = {`input-symbol ${errorClass('confirm')}`}>
-                            <input type = "password"
-                                    name = "confirm"
-                                    ref = {
-                                        (c) => {
-                                            this.confirm = c;
-                                        }
-                                    }
-                                    placeholder = "password confirm" />
+                            <input
+                                type = "password"
+                                name = "confirm"
+                                ref = {
+                                    (c) => {
+                                        this.confirm = c;
+                                    }}
+                                placeholder = "password confirm"
+                            />
                         </div>
                         <button> login </button>
                         {link}

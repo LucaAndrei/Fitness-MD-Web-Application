@@ -1,6 +1,7 @@
 Meteor.startup(() => {
 
 
+	let LOG_TAG = "generate-accounts";
 	let administrators = [
 	  {
 	    name: { first: 'Admin', last: 'McAdmin' },
@@ -10,7 +11,7 @@ Meteor.startup(() => {
 	];
 
 	let generateAccounts = () => {
-	  console.log("generateAccounts");
+	  console.log(LOG_TAG,"generateAccounts");
 	  let fakeUserCount = 1,
 	      usersExist    = _checkIfAccountsExist( administrators.length + fakeUserCount );
 
@@ -41,7 +42,7 @@ Meteor.startup(() => {
 	        Roles.setUserRoles( userId, 'employee' );
 	      }
 	    }
-	    //console.log("_createUsers user",user);
+	    //console.log(LOG_TAG,"_createUsers user",user);
 	  }
 	};
 
@@ -57,8 +58,8 @@ Meteor.startup(() => {
 	      name: user.name
 	    }
 	  });
-	  //console.log("email",user);
-	  //console.log("createUser",userId);
+	  //console.log(LOG_TAG,"email",user);
+	  //console.log(LOG_TAG,"createUser",userId);
 
 	  return userId;
 	};
@@ -93,7 +94,7 @@ Meteor.startup(() => {
 
 
 	let setAdmins = () => {
-		//console.log("setAdmins");
+		//console.log(LOG_TAG,"setAdmins");
 	  for ( let i = 0; i <admins.length; i++ ) {
 	    var admin   = Meteor.users.findOne( { "emails.address": admins[i].email }, { fields: { "_id": 1 } } );
 	        isAdmin = _isUserAnAdmin( admin._id );
