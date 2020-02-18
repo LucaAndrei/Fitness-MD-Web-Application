@@ -10,7 +10,10 @@ All the data from the database was then displayed in a Web Application.
 Besides counting steps, the Android application would also send the user with personalised activity routines or plan meals based on the user's goals.
 Through the web application the user could register for public sport activities made throughout the city.
 
-Repositories for all the parts of the Master's Degree Thesis : 
+Repositories for all the parts of the Master's Degree Thesis :
+
 https://github.com/LucaAndrei/FitnessMD_Android
+
 https://github.com/LucaAndrei/FitnessMD_Android_Fragments - updated the Android app to use Fragments
+
 https://github.com/LucaAndrei/FitnessMD/
